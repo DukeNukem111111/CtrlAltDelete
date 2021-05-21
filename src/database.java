@@ -6,7 +6,11 @@ public class database {
         Connection con = null;
         try {
             Class.forName("com.mysql.jbdc.driver");
-            con = DriverManager.getConnection("");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/javapos","duke","12345");
+            return con;
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+            return null;
         }
     }
 }
