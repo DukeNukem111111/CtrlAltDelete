@@ -4,11 +4,12 @@ import java.awt.event.ActionListener;
 
 public class RestaurantPOS extends JFrame {
     private JButton salesButton;
-    private JButton menuControlButton;
+    private JButton reservationsButton;
     private JButton inventoryControlButton;
     private JButton reportsButton;
     private JLabel homeScreenLogoButton;
     private JPanel homeScreen;
+    private JButton menuControlButton;
 
     public static void main(String[] args) {
         JFrame homeScreenFrame = new RestaurantPOS("Home Screen");
@@ -33,6 +34,34 @@ public class RestaurantPOS extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFrame salesWindow = new Sales("Sales");
                 salesWindow.setVisible(true);
+            }
+        });
+        reportsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame reportsWindow = new Reports("Reports");
+                reportsWindow.setVisible(true);
+            }
+        });
+        inventoryControlButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame inventoryControlWindow = new InventoryControl("Inventory Control");
+                inventoryControlWindow.setVisible(true);
+            }
+        });
+        menuControlButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame menuControlWindow = new MenuControl("Inventory Control");
+                menuControlWindow.setVisible(true);
+            }
+        });
+        reservationsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame reservationsWindow = new Reservations("Inventory Control");
+                reservationsWindow.setVisible(true);
             }
         });
     }
