@@ -1,7 +1,8 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Sales extends JFrame {
-    private JPanel salesForm;
+    public JPanel salesForm;
     private JLabel salesHeading;
     private JButton button1;
     private JButton button2;
@@ -37,6 +38,10 @@ public class Sales extends JFrame {
     private JButton button32;
     private JButton button33;
     private JButton button34;
+    private JTextArea totalTextArea;
+    private JTextArea subTotalTextArea;
+    private JButton button35;
+    private JButton button36;
 
     public static void main(String[] args) {
         JFrame salesScreenFrame = new Sales("Sales");
