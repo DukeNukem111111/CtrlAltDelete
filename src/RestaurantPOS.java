@@ -27,10 +27,12 @@ public class RestaurantPOS extends JFrame {
 
         homeScreenLogoButton.setIcon(new ImageIcon("C:\\Users\\Duke\\IdeaProjects\\JavaPOS\\icon.png"));
         validate();
+
         salesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                JFrame salesWindow = new Sales("Sales");
+                salesWindow.setVisible(true);
             }
         });
     }
