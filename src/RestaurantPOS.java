@@ -53,14 +53,14 @@ public class RestaurantPOS extends JFrame {
         menuControlButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame menuControlWindow = new MenuControl("Inventory Control");
+                JFrame menuControlWindow = new MenuControl("Menu Control");
                 menuControlWindow.setVisible(true);
             }
         });
         reservationsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame reservationsWindow = new Reservations("Inventory Control");
+                JFrame reservationsWindow = new Reservations("Reservations");
                 reservationsWindow.setVisible(true);
             }
         });
