@@ -105,5 +105,18 @@ public class Reservations extends JFrame {
                 }
             }
         });
+
+        removeButton.addActionListener(new ActionListener() { //Remove certain records from database
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id = searchTextField.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("DELETE FROM reservations WHERE CustomerName = '"+id+"'");
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
     }
 }
