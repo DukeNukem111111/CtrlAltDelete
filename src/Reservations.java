@@ -86,5 +86,24 @@ public class Reservations extends JFrame {
                 searchButton.doClick();
             }
         });
+
+        updateButton.addActionListener(new ActionListener() { //Adds update functionality
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String customerName = customerNameTextField.getText();
+                String contactNumber = contactNumberTextField.getText();
+                String tableNumber = tableNumberTextField.getText();
+                String reservationTime = reservationTimeTextField.getText();
+                String seats = seatsTextField.getText();
+                String id = searchTextField.getText();
+
+                try{
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("UPDATE reservations SET CustomerName = '"+customerName+"', ContactNumber = '"+contactNumber+"', TableNumber = '"+tableNumber+"', ReservationTime = '"+reservationTime+"', Seats = '"+seats+"' WHERE CustomerName = '"+id+"'");
+                }catch (Exception f) {
+                    System.out.println(f);
+                }
+            }
+        });
     }
 }
