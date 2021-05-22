@@ -1,15 +1,17 @@
 import com.mysql.cj.protocol.Resultset;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.xml.transform.Result;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Statement;
 import java.sql.*;
+import java.util.Vector;
 
 public class Reservations extends JFrame {
     private JPanel reservationsForm;
-    private JTable table1;
+    private JTable reservationsTable;
     private JTextField contactNumberTextField;
     private JTextField customerNameTextField;
     private JLabel customerNameLabel;
@@ -25,14 +27,52 @@ public class Reservations extends JFrame {
     private JTextField seatsTextField;
     private JTextField searchTextField;
     private JButton searchButton;
+    private JPanel reservationsTableFrame;
+
 
     public static void main(String[] args) {
         JFrame reservationsFrame = new Reservations("Reservations");
         reservationsFrame.setVisible(true);
     }
 
+    public void tb_load(){ //Displays database reservations table in jtable
+        try{
+
+            DefaultTableModel dt = (DefaultTableModel) reservationsTable.getModel();
+            dt.setRowCount(0);
+            dt.setColumnCount(5); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
+
+            //Add names to columns
+            reservationsTable.getColumnModel().getColumn(0).setHeaderValue("Customer Name");
+            reservationsTable.getColumnModel().getColumn(1).setHeaderValue("Contact Number");
+            reservationsTable.getColumnModel().getColumn(2).setHeaderValue("Table Number");
+            reservationsTable.getColumnModel().getColumn(3).setHeaderValue("Reservation Time");
+            reservationsTable.getColumnModel().getColumn(4).setHeaderValue("Seats");
+            reservationsTable.getTableHeader().resizeAndRepaint();
+
+            Statement s = db.mycon().createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM reservations");
+
+            while (rs.next()){
+                Vector v = new Vector();
+                v.add(rs.getString(1));
+                v.add(rs.getString(2));
+                v.add(rs.getString(3));
+                v.add(rs.getString(4));
+                v.add(rs.getString(5));
+
+                dt.addRow(v);
+
+            }
+
+        }catch (SQLException f){
+            System.out.println(f);
+        }
+    }
+
     public Reservations(String title) {
         super(title);
+        tb_load();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setContentPane(reservationsForm);
         this.setLocationRelativeTo(null);
@@ -40,6 +80,9 @@ public class Reservations extends JFrame {
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes programs start in fullscreen
         this.setResizable(false);
+
+
+
 
         addButton.addActionListener(new ActionListener() {
             @Override
