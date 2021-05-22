@@ -40,7 +40,15 @@ public class Reservations extends JFrame {
 
             DefaultTableModel dt = (DefaultTableModel) reservationsTable.getModel();
             dt.setRowCount(0);
-            dt.setColumnCount(5); //Line is necessary to add colums to table, caused major headaches and was found by chance
+            dt.setColumnCount(5); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
+
+            //Add names to columns
+            reservationsTable.getColumnModel().getColumn(0).setHeaderValue("Customer Name");
+            reservationsTable.getColumnModel().getColumn(1).setHeaderValue("Contact Number");
+            reservationsTable.getColumnModel().getColumn(2).setHeaderValue("Table Number");
+            reservationsTable.getColumnModel().getColumn(3).setHeaderValue("Reservation Time");
+            reservationsTable.getColumnModel().getColumn(4).setHeaderValue("Seats");
+            reservationsTable.getTableHeader().resizeAndRepaint();
 
             Statement s = db.mycon().createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM reservations");
