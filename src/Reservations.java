@@ -47,10 +47,10 @@ public class Reservations extends JFrame {
                 String reservationTime = reservationTimeTextField.getText();
                 String seats = seatsTextField.getText();
 
-                try{
-                    Statement s = database.reservations().createStatement();
+                try {
+                    Statement s = db.databaseConnection().createStatement();
                     s.executeUpdate("INSERT INTO reservations VALUES ('"+customerName+"','"+contactNumber+"','"+tableNumber+"','"+reservationTime+"','"+seats+"')");
-                } catch (SQLException f) {
+                }catch (Exception f){
                     System.out.println(f);
                 }
             }
