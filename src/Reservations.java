@@ -28,6 +28,7 @@ public class Reservations extends JFrame {
     private JTextField searchTextField;
     private JButton searchButton;
     private JPanel reservationsTableFrame;
+    private JButton clearButton;
 
 
     public static void main(String[] args) {
@@ -102,6 +103,7 @@ public class Reservations extends JFrame {
                     System.out.println(f);
                 }
                 tb_load();
+                clearButton.doClick();
             }
         });
 
@@ -153,6 +155,7 @@ public class Reservations extends JFrame {
                     System.out.println(f);
                 }
                 tb_load();
+                clearButton.doClick();
             }
         });
 
@@ -168,6 +171,20 @@ public class Reservations extends JFrame {
                     System.out.println(f);
                 }
                 tb_load();
+                clearButton.doClick();
+            }
+        });
+
+        //Clears all text fields
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                customerNameTextField.setText(null);
+                contactNumberTextField.setText(null);
+                tableNumberTextField.setText(null);
+                reservationTimeTextField.setText(null);
+                seatsTextField.setText(null);
+                searchTextField.setText(null);
             }
         });
     }
