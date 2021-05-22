@@ -35,7 +35,7 @@ public class Reservations extends JFrame {
         reservationsFrame.setVisible(true);
     }
 
-    public void tb_load(){ //Displays database reservations table in jtable
+    public void tb_load(){ //Displays our javapos database reservations table in the jtable
         try{
 
             DefaultTableModel dt = (DefaultTableModel) reservationsTable.getModel();
@@ -99,6 +99,7 @@ public class Reservations extends JFrame {
                 }catch (Exception f){
                     System.out.println(f);
                 }
+                tb_load();
             }
         });
 
@@ -120,6 +121,7 @@ public class Reservations extends JFrame {
                 } catch (SQLException f){
                     System.out.println(f);
                 }
+                tb_load();
             }
         });
 
@@ -146,6 +148,7 @@ public class Reservations extends JFrame {
                 }catch (Exception f) {
                     System.out.println(f);
                 }
+                tb_load();
             }
         });
 
@@ -159,6 +162,7 @@ public class Reservations extends JFrame {
                 }catch (Exception f){
                     System.out.println(f);
                 }
+                tb_load();
             }
         });
     }
