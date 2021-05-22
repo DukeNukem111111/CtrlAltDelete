@@ -31,7 +31,7 @@ public class Reservations extends JFrame {
 
 
     public static void main(String[] args) {
-        JFrame reservationsFrame = new Reservations("Reservations");
+        JFrame reservationsFrame = new Reservations("Reservations"); //Creates the new window that holds all reservations related items
         reservationsFrame.setVisible(true);
     }
 
@@ -53,6 +53,7 @@ public class Reservations extends JFrame {
             Statement s = db.mycon().createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM reservations");
 
+            //Write data from mySQL database to jtable
             while (rs.next()){
                 Vector v = new Vector();
                 v.add(rs.getString(1));
@@ -70,6 +71,7 @@ public class Reservations extends JFrame {
         }
     }
 
+    //All settings for reservations window that pops up when the button is clicked on the home screen
     public Reservations(String title) {
         super(title);
         tb_load();
@@ -83,7 +85,7 @@ public class Reservations extends JFrame {
 
 
 
-
+        //Adds data to database
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -103,6 +105,7 @@ public class Reservations extends JFrame {
             }
         });
 
+        //Searches for data using the customer name as the search ID
         searchButton.addActionListener(new ActionListener() { //search button code, implements search functionality for database
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -132,6 +135,7 @@ public class Reservations extends JFrame {
             }
         });
 
+        //Allows changes to be made to database records
         updateButton.addActionListener(new ActionListener() { //Adds update functionality
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,6 +156,7 @@ public class Reservations extends JFrame {
             }
         });
 
+        //Removal of records
         removeButton.addActionListener(new ActionListener() { //Remove certain records from database
             @Override
             public void actionPerformed(ActionEvent e) {
