@@ -1,4 +1,7 @@
+import com.mysql.cj.protocol.Resultset;
+
 import javax.swing.*;
+import javax.xml.transform.Result;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Statement;
@@ -20,7 +23,7 @@ public class Reservations extends JFrame {
     private JTextField reservationTimeTextField;
     private JLabel seatsLabel;
     private JTextField seatsTextField;
-    private JTextField textField6;
+    private JTextField searchTextField;
     private JButton searchButton;
 
     public static void main(String[] args) {
@@ -47,12 +50,40 @@ public class Reservations extends JFrame {
                 String reservationTime = reservationTimeTextField.getText();
                 String seats = seatsTextField.getText();
 
-                try {
-                    Statement s = db.databaseConnection().createStatement();
+                try { //Add button code, adds details to mysql database
+                    Statement s = db.mycon().createStatement();
                     s.executeUpdate("INSERT INTO reservations VALUES ('"+customerName+"','"+contactNumber+"','"+tableNumber+"','"+reservationTime+"','"+seats+"')");
                 }catch (Exception f){
                     System.out.println(f);
                 }
+            }
+        });
+
+        searchButton.addActionListener(new ActionListener() { //search button code, implements search functionality for database
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchResult = searchTextField.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    ResultSet rs = s.executeQuery(" SELECT * FROM reservations WHERE CustomerName = '"+searchResult+"'");
+                    if (rs.next()){
+                        customerNameTextField.setText(rs.getString("CustomerName"));
+                        contactNumberTextField.setText(rs.getString("ContactNumber"));
+                        tableNumberTextField.setText(rs.getString("TableNumber"));
+                        reservationTimeTextField.setText(rs.getString("ReservationTime"));
+                        seatsTextField.setText(rs.getString("Seats"));
+                    }
+
+                } catch (SQLException f){
+                    System.out.println(f);
+                }
+            }
+        });
+
+        searchTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchButton.doClick();
             }
         });
     }
