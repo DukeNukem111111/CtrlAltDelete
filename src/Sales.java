@@ -4,7 +4,6 @@ public class Sales extends JFrame {
     public JPanel salesForm;
     private JLabel salesHeading;
     private JButton startersButton;
-    private JButton button5;
     private JButton vodkaButton;
     private JButton rumButton;
     private JButton sparklingWineButton;
@@ -18,7 +17,6 @@ public class Sales extends JFrame {
     private JButton wineButton;
     private JButton ginButton;
     private JButton brandyButton;
-    private JButton button19;
     private JButton steaksButton;
     private JButton largePizzaButton;
     private JButton fishButton;
@@ -26,7 +24,6 @@ public class Sales extends JFrame {
     private JButton champagneButton;
     private JButton whiskeyButton;
     private JButton tequilaButton;
-    private JButton button31;
     private JTextArea totalTextArea;
     private JTextArea subTotalTextArea;
 
@@ -45,5 +42,9 @@ public class Sales extends JFrame {
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes programs start in fullscreen
         this.setResizable(false);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
