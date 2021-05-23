@@ -96,9 +96,120 @@ public class Sales extends JFrame {
                 tabbedPane.setSelectedComponent(ginTab);
             }
         });
+        lunchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(lunchTab);
+            }
+        });
+        dinnerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(dinnerTab);
+            }
+        });
+        startersButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(startersTab);
+            }
+        });
+        saladsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(saladsTab);
+            }
+        });
+        steakButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(steakTab);
+            }
+        });
+        burgersButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(burgersTab);
+            }
+        });
+        pizzaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(pizzaTab);
+            }
+        });
+        chickenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(chickenTab);
+            }
+        });
+        combosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(combosTab);
+            }
+        });
+        waterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(waterTab);
+            }
+        });
+        beerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(beerTab);
+            }
+        });
+        cansButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(cansTab);
+            }
+        });
+        wineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(wineTab);
+            }
+        });
+        champagneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(champagneTab);
+            }
+        });
+        tequilaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(tequilaTab);
+            }
+        });
+        rumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(rumTab);
+            }
+        });
+        whiskeyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(whiskeyTab);
+            }
+        });
+        vodkaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(vodkaTab);
+            }
+        });
+        brandyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(brandyTab);
+            }
+        });
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }
