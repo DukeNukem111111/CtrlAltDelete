@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,10 +27,10 @@ public class Sales extends JFrame {
     private JButton steakButton;
     private JButton saladsButton;
     private JButton startersButton;
-    private JTable table1;
-    private JTable table2;
-    private JButton button28;
-    private JButton button29;
+    private JTable orderDetailsTableTop;
+    private JTable orderDetailsTableBottom;
+    private JButton placeOrderButton;
+    private JButton clearAllButton;
     private JButton cashConfirmPaymentButton;
     private JTextField customerNameTextField;
     private JTextField subtotalTextField;
@@ -42,10 +43,8 @@ public class Sales extends JFrame {
     private JTextField textField9;
     private JTextField textField10;
     private JButton cardConfirmPaymentButton;
-    private JCheckBox cashPaymentCheckBox;
-    private JCheckBox cardPaymentCheckBox;
     private JTabbedPane tabbedPane;
-    private JButton button1;
+    private JButton sandwichButton;
     private JButton button2;
     private JButton button3;
     private JButton button10;
@@ -73,6 +72,7 @@ public class Sales extends JFrame {
     private JPanel startersTab;
     private JPanel steakTab;
     private JPanel saladsTab;
+    private JPanel cashJpanel;
 
     public static void main(String[] args) {
         JFrame salesScreenFrame = new Sales("Sales");
@@ -211,5 +211,4 @@ public class Sales extends JFrame {
             }
         });
     }
-
 }
