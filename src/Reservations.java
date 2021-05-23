@@ -184,7 +184,6 @@ public class Reservations extends JFrame {
                 tableNumberTextField.setText(null);
                 reservationTimeTextField.setText(null);
                 seatsTextField.setText(null);
-                searchTextField.setText(null);
             }
         });
     }
