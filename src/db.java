@@ -1,7 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class db {
+public class db { //Establishing connection to javapos database, table specification is done by classes e.g reservations
 
     public static Connection mycon(){
 
