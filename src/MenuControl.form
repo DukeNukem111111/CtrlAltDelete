@@ -263,7 +263,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="cc392" class="javax.swing.JTable" binding="menuControlTable">
+              <component id="cc392" class="javax.swing.JTable" binding="inventoryControlTable">
                 <constraints/>
                 <properties/>
               </component>
