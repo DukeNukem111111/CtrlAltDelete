@@ -21,7 +21,7 @@ public class RestaurantPOS extends JFrame {
 
     public RestaurantPOS(String title) {
         super(title);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(homeScreen);
         this.setLocationRelativeTo(null);
         this.pack();

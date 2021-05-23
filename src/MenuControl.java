@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public class MenuControl extends JFrame {
     private JPanel menuControlForm;
-    private JTable menuControlTable;
+    private JTable inventoryControlTable;
     private JTextField itemNameTextField;
     private JTextField itemIDTextField;
     private JLabel itemIDLabel;
@@ -28,25 +28,26 @@ public class MenuControl extends JFrame {
     private JLabel searchItemIDLabel;
     private JScrollPane menuControlJScrollPane;
     private JLabel inWindowLabel;
+    private JLabel deliveredLabel;
 
 
     public static void main(String[] args) {
-        JFrame menuControlFrame = new MenuControl("Reservations"); //Creates the new window that holds all menu item related items
+        JFrame menuControlFrame = new MenuControl("Menu Control"); //Creates the new window that holds all menu item related items
         menuControlFrame.setVisible(true);
     }
 
     public void tb_load(){ //Displays our javapos database menuControls table in the jtable
         try{
 
-            DefaultTableModel dt = (DefaultTableModel) menuControlTable.getModel();
+            DefaultTableModel dt = (DefaultTableModel) inventoryControlTable.getModel();
             dt.setRowCount(0);
             dt.setColumnCount(3); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
 
             //Add names to columns
-            menuControlTable.getColumnModel().getColumn(0).setHeaderValue("Item ID");
-            menuControlTable.getColumnModel().getColumn(1).setHeaderValue("Item Name");
-            menuControlTable.getColumnModel().getColumn(2).setHeaderValue("Item Price");
-            menuControlTable.getTableHeader().resizeAndRepaint();
+            inventoryControlTable.getColumnModel().getColumn(0).setHeaderValue("Item ID");
+            inventoryControlTable.getColumnModel().getColumn(1).setHeaderValue("Item Name");
+            inventoryControlTable.getColumnModel().getColumn(2).setHeaderValue("Item Price");
+            inventoryControlTable.getTableHeader().resizeAndRepaint();
 
             Statement s = db.mycon().createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM menucontrol");

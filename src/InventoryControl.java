@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.Vector;
 
 public class InventoryControl extends JFrame {
-    private JPanel menuControlForm;
+    private JPanel inventoryControlForm;
     private JTable menuControlTable;
     private JTextField itemNameTextField;
     private JTextField itemIDTextField;
@@ -18,38 +18,42 @@ public class InventoryControl extends JFrame {
     private JButton removeButton;
     private JButton updateButton;
     private JLabel tableNumberLabel;
-    private JTextField itemPriceTextField;
+    private JTextField itemQuantityTextField;
     private JTextField reservationTimeTextField;
     private JTextField seatsTextField;
     private JTextField searchTextField;
     private JButton searchButton;
-    private JPanel reservationsTableFrame;
+    private JPanel inventoryControlTableFrame;
     private JButton clearButton;
     private JLabel searchItemIDLabel;
-    private JScrollPane menuControlJScrollPane;
+    private JScrollPane inventoryControlJScrollPane;
     private JLabel inWindowLabel;
+    private JLabel deliveredLabel;
+    private JTable inventoryControlTable;
+    private JTextField deliveredTextField;
 
 
     public static void main(String[] args) {
-        JFrame menuControlFrame = new InventoryControl("Reservations"); //Creates the new window that holds all menu item related items
-        menuControlFrame.setVisible(true);
+        JFrame inventoryControlControlFrame = new InventoryControl("Inventory Control"); //Creates the new window that holds all inventory control related items
+        inventoryControlControlFrame.setVisible(true);
     }
 
-    public void tb_load(){ //Displays our javapos database menuControls table in the jtable
+    public void tb_load(){ //Displays our javapos database inventoryControl table in the jtable
         try{
 
-            DefaultTableModel dt = (DefaultTableModel) menuControlTable.getModel();
+            DefaultTableModel dt = (DefaultTableModel) inventoryControlTable.getModel();
             dt.setRowCount(0);
-            dt.setColumnCount(3); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
+            dt.setColumnCount(4); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
 
             //Add names to columns
-            menuControlTable.getColumnModel().getColumn(0).setHeaderValue("Item ID");
-            menuControlTable.getColumnModel().getColumn(1).setHeaderValue("Item Name");
-            menuControlTable.getColumnModel().getColumn(2).setHeaderValue("Item Price");
-            menuControlTable.getTableHeader().resizeAndRepaint();
+            inventoryControlTable.getColumnModel().getColumn(0).setHeaderValue("Item ID");
+            inventoryControlTable.getColumnModel().getColumn(1).setHeaderValue("Item Name");
+            inventoryControlTable.getColumnModel().getColumn(2).setHeaderValue("Item Quantity");
+            inventoryControlTable.getColumnModel().getColumn(3).setHeaderValue("Delivery Date");
+            inventoryControlTable.getTableHeader().resizeAndRepaint();
 
             Statement s = db.mycon().createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM menucontrol");
+            ResultSet rs = s.executeQuery("SELECT * FROM inventorycontrol");
 
             //Write data from mySQL database to jtable
             while (rs.next()){
@@ -57,6 +61,7 @@ public class InventoryControl extends JFrame {
                 v.add(rs.getString(1));
                 v.add(rs.getString(2));
                 v.add(rs.getString(3));
+                v.add(rs.getString(4));
 
 
                 dt.addRow(v);
@@ -68,12 +73,12 @@ public class InventoryControl extends JFrame {
         }
     }
 
-    //All settings for menuControl window that pops up when the button is clicked on the home screen
+    //All settings for inventoryControl window that pops up when the button is clicked on the home screen
     public InventoryControl(String title) {
         super(title);
         tb_load();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setContentPane(menuControlForm);
+        this.setContentPane(inventoryControlForm);
         this.setLocationRelativeTo(null);
         this.pack();
         this.setLocationRelativeTo(null);
@@ -88,12 +93,13 @@ public class InventoryControl extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String itemID = itemIDTextField.getText();
                 String itemName = itemNameTextField.getText();
-                String itemPrice = itemPriceTextField.getText();
+                String itemQuantity = itemQuantityTextField.getText();
+                String delivered = deliveredTextField.getText();
 
 
                 try { //Add button code, adds details to mysql database
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("INSERT INTO menucontrol VALUES ('"+itemID+"','"+itemName+"','"+itemPrice+"')");
+                    s.executeUpdate("INSERT INTO inventorycontrol VALUES ('"+itemID+"','"+itemName+"','"+itemQuantity+"','"+delivered+"')");
                 }catch (Exception f){
                     System.out.println(f);
                 }
@@ -102,18 +108,19 @@ public class InventoryControl extends JFrame {
             }
         });
 
-        //Searches for data using the item name as the search ID
+        //Searches for data using the itemID as the search ID
         searchButton.addActionListener(new ActionListener() { //search button code, implements search functionality for database
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchResult = searchTextField.getText();
                 try {
                     Statement s = db.mycon().createStatement();
-                    ResultSet rs = s.executeQuery(" SELECT * FROM menucontrol WHERE itemID = '"+searchResult+"'");
+                    ResultSet rs = s.executeQuery(" SELECT * FROM inventorycontrol WHERE itemID = '"+searchResult+"'");
                     if (rs.next()){
                         itemIDTextField.setText(rs.getString("itemID"));
                         itemNameTextField.setText(rs.getString("itemName"));
-                        itemPriceTextField.setText(rs.getString("itemPrice"));
+                        itemQuantityTextField.setText(rs.getString("itemQuantity"));
+                        deliveredTextField.setText(rs.getString("delivered"));
                     }
 
                 } catch (SQLException f){
@@ -136,12 +143,13 @@ public class InventoryControl extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String itemID = itemIDTextField.getText();
                 String itemName = itemNameTextField.getText();
-                String itemPrice = itemPriceTextField.getText();
+                String itemQuantity = itemQuantityTextField.getText();
+                String delivered = deliveredTextField.getText();
                 String id = searchTextField.getText();
 
                 try{
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("UPDATE menucontrol SET itemID = '"+itemID+"', itemName = '"+itemName+"', itemPrice = '"+itemPrice+"' WHERE itemID = '"+id+"'");
+                    s.executeUpdate("UPDATE inventorycontrol SET itemID = '"+itemID+"', itemName = '"+itemName+"', itemQuantity = '"+itemQuantity+"', delivered = '"+delivered+"' WHERE itemID = '"+id+"'");
                 }catch (Exception f) {
                     System.out.println(f);
                 }
@@ -157,7 +165,7 @@ public class InventoryControl extends JFrame {
                 String id = searchTextField.getText();
                 try {
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("DELETE FROM menuControl WHERE itemID = '"+id+"'");
+                    s.executeUpdate("DELETE FROM inventorycontrol WHERE itemID = '"+id+"'");
                 }catch (Exception f){
                     System.out.println(f);
                 }
@@ -172,7 +180,8 @@ public class InventoryControl extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 itemIDTextField.setText(null);
                 itemNameTextField.setText(null);
-                itemPriceTextField.setText(null);
+                itemQuantityTextField.setText(null);
+                deliveredTextField.setText(null);
             }
         });
     }
