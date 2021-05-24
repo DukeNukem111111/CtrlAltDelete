@@ -31,7 +31,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="41400" class="javax.swing.JTable" binding="table1" default-binding="true">
+                  <component id="41400" class="javax.swing.JTable" binding="orderReportTable">
                     <constraints/>
                     <properties/>
                     <clientProperties>
@@ -42,7 +42,7 @@
               </scrollpane>
             </children>
           </grid>
-          <grid id="a36e0" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="a36e0" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="10" right="10"/>
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -66,14 +66,6 @@
                   </grid>
                 </constraints>
                 <properties/>
-              </component>
-              <component id="539f1" class="javax.swing.JButton" binding="ordersClearButton">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Clear"/>
-                </properties>
               </component>
             </children>
           </grid>
@@ -102,7 +94,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="75cd6" class="javax.swing.JTable" binding="reportsTable">
+                  <component id="75cd6" class="javax.swing.JTable" binding="inventoryControlReportsTable">
                     <constraints/>
                     <properties/>
                   </component>
@@ -110,7 +102,7 @@
               </scrollpane>
             </children>
           </grid>
-          <grid id="93db6" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="93db6" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="10" right="10"/>
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -118,7 +110,7 @@
             <properties/>
             <border type="bevel-lowered"/>
             <children>
-              <component id="6ec0b" class="javax.swing.JButton" binding="inventoryControlSearch">
+              <component id="6ec0b" class="javax.swing.JButton" binding="inventoryControlSearchButton">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -134,14 +126,6 @@
                   </grid>
                 </constraints>
                 <properties/>
-              </component>
-              <component id="35c5" class="javax.swing.JButton" binding="inventoryControlClearButton">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Clear"/>
-                </properties>
               </component>
             </children>
           </grid>
@@ -170,7 +154,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="8a5a8" class="javax.swing.JTable" binding="table4" default-binding="true">
+                  <component id="8a5a8" class="javax.swing.JTable" binding="transactionReportTable">
                     <constraints/>
                     <properties/>
                   </component>
@@ -178,7 +162,7 @@
               </scrollpane>
             </children>
           </grid>
-          <grid id="3a5a9" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="3a5a9" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="10" right="10"/>
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -202,14 +186,6 @@
                   </grid>
                 </constraints>
                 <properties/>
-              </component>
-              <component id="b53cb" class="javax.swing.JButton" binding="transactionClearButton">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Clear"/>
-                </properties>
               </component>
             </children>
           </grid>

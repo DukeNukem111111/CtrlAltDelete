@@ -9,18 +9,15 @@ import java.util.Vector;
 
 public class Reports extends JFrame {
     private JPanel reportsForm;
-    private JTable table1;
-    private JTable reportsTable;
-    private JTable table4;
+    private JTable orderReportTable;
+    private JTable inventoryControlReportsTable;
+    private JTable transactionReportTable;
     private JButton ordersSearchButton;
     private JTextField ordersSearchTextField;
     private JButton inventoryControlSearchButton;
     private JTextField inventoryControlTextField;
     private JButton transactionSearchButton;
     private JTextField transactionTextField;
-    private JButton inventoryControlClearButton;
-    private JButton ordersClearButton;
-    private JButton transactionClearButton;
 
     public static void main(String[] args) {
         JFrame reportsScreenFrame = new Reports("Reports");
@@ -31,19 +28,19 @@ public class Reports extends JFrame {
 
 
 
-    public void tb_load(){ //Displays our javapos database menuControls table in the jtable
+    public void tb_load(){ //Displays our javapos database inventoryControl table in the jtable
         try{
 
-            DefaultTableModel dt = (DefaultTableModel) reportsTable.getModel();
+            DefaultTableModel dt = (DefaultTableModel) inventoryControlReportsTable.getModel();
             dt.setRowCount(0);
             dt.setColumnCount(4); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
 
             //Add names to columns
-            reportsTable.getColumnModel().getColumn(0).setHeaderValue("Item ID");
-            reportsTable.getColumnModel().getColumn(1).setHeaderValue("Item Name");
-            reportsTable.getColumnModel().getColumn(2).setHeaderValue("Item Price");
-            reportsTable.getColumnModel().getColumn(3).setHeaderValue("Item Quantity");
-            reportsTable.getTableHeader().resizeAndRepaint();
+            inventoryControlReportsTable.getColumnModel().getColumn(0).setHeaderValue("Item ID");
+            inventoryControlReportsTable.getColumnModel().getColumn(1).setHeaderValue("Item Name");
+            inventoryControlReportsTable.getColumnModel().getColumn(2).setHeaderValue("Item Quantity");
+            inventoryControlReportsTable.getColumnModel().getColumn(3).setHeaderValue("delivered");
+            inventoryControlReportsTable.getTableHeader().resizeAndRepaint();
 
             Statement s = db.mycon().createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM inventorycontrol");
@@ -54,6 +51,7 @@ public class Reports extends JFrame {
                 v.add(rs.getString(1));
                 v.add(rs.getString(2));
                 v.add(rs.getString(3));
+                v.add(rs.getString(4));
 
                 dt.addRow(v);
 
@@ -64,8 +62,85 @@ public class Reports extends JFrame {
         }
         }
 
+    public void tb2_load(){ //Displays the order history in orderReportTable
+        try{
+
+            DefaultTableModel dt = (DefaultTableModel) orderReportTable.getModel();
+            dt.setRowCount(0);
+            dt.setColumnCount(4); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
+
+            //Add names to columns
+            orderReportTable.getColumnModel().getColumn(0).setHeaderValue("Order ID");
+            orderReportTable.getColumnModel().getColumn(1).setHeaderValue("Customer Name");
+            orderReportTable.getColumnModel().getColumn(2).setHeaderValue("Order Details");
+            orderReportTable.getColumnModel().getColumn(3).setHeaderValue("Order Total");
+            orderReportTable.getTableHeader().resizeAndRepaint();
+
+            Statement s = db.mycon().createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM orderstablebottom");
+
+            //Write data from mySQL database to jtable
+            while (rs.next()){
+                Vector v = new Vector();
+                v.add(rs.getString(1));
+                v.add(rs.getString(2));
+                v.add(rs.getString(3));
+                v.add(rs.getString(4));
+
+                dt.addRow(v);
+
+            }
+
+        }catch (SQLException f){
+            System.out.println(f);
+        }
+    }
+
+    public void tb3_load(){ //Displays the transaction history in transactionReportsTable
+        try{
+
+            DefaultTableModel dt = (DefaultTableModel) transactionReportTable.getModel();
+            dt.setRowCount(0);
+            dt.setColumnCount(6); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
+
+            //Add names to columns
+            transactionReportTable.getColumnModel().getColumn(0).setHeaderValue("Transaction ID");
+            transactionReportTable.getColumnModel().getColumn(1).setHeaderValue("Order ID");
+            transactionReportTable.getColumnModel().getColumn(2).setHeaderValue("Customer Name");
+            transactionReportTable.getColumnModel().getColumn(3).setHeaderValue("Transaction Date");
+            transactionReportTable.getColumnModel().getColumn(4).setHeaderValue("Transaction Amount");
+            transactionReportTable.getColumnModel().getColumn(5).setHeaderValue("Transaction Type");
+            transactionReportTable.getTableHeader().resizeAndRepaint();
+
+            Statement s = db.mycon().createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM transactions");
+
+            //Write data from mySQL database to jtable
+            while (rs.next()){
+                Vector v = new Vector();
+                v.add(rs.getString(1));
+                v.add(rs.getString(2));
+                v.add(rs.getString(3));
+                v.add(rs.getString(4));
+                v.add(rs.getString(5));
+                v.add(rs.getString(6));
+
+                dt.addRow(v);
+
+            }
+
+        }catch (SQLException f){
+            System.out.println(f);
+        }
+    }
+
+
+
     public Reports(String title) {
         super(title);
+        tb_load();
+        tb2_load();
+        tb3_load();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setContentPane(reportsForm);
         this.setLocationRelativeTo(null);
@@ -76,19 +151,16 @@ public class Reports extends JFrame {
 
 
 
-
-
-
-
-        //Searches for data using the item name as the search ID
+        //Shows everything in our database table called inventorycontrol
         inventoryControlSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String searchResult = ordersSearchTextField.getText();
+                String searchResult = inventoryControlTextField.getText();
                 try {
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate()
+                    ResultSet rs = s.executeQuery("SELECT * FROM inventorycontrol");
                     if (rs.next()){
+
 
 
                     }
@@ -106,16 +178,19 @@ public class Reports extends JFrame {
             }
         });
 
-        //Searches for data using the item name as the search ID
+
+
+        //Shows everything in our database table called orderstablebottom
         ordersSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchResult = ordersSearchTextField.getText();
                 try {
                     Statement s = db.mycon().createStatement();
-                    ResultSet rs = s.executeQuery(" SELECT * FROM inventoryControl WHERE itemName = '"+searchResult+"'");
+                    ResultSet rs = s.executeQuery("SELECT * FROM orderstablebottom");
                     if (rs.next()){
-                        inventoryControlTextField.setText(rs.getString("itemName"));
+
+
 
                     }
 
@@ -125,12 +200,43 @@ public class Reports extends JFrame {
                 tb_load();
             }
         });
-        inventoryControlTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
+        ordersSearchTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
             @Override
             public void actionPerformed(ActionEvent e) {
-                inventoryControlSearchButton.doClick();
+                ordersSearchButton.doClick();
             }
         });
+
+        //Shows everything in our database table called transactions
+        transactionSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchResult = transactionTextField.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    ResultSet rs = s.executeQuery("SELECT * FROM transactions");
+                    if (rs.next()){
+
+
+
+                    }
+
+                } catch (SQLException f){
+                    System.out.println(f);
+                }
+                tb_load();
+            }
+        });
+        transactionTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                transactionSearchButton.doClick();
+            }
+        });
+
+
+
+
 
 
             }
