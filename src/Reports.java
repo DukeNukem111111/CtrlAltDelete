@@ -12,20 +12,14 @@ public class Reports extends JFrame {
     private JTable orderReportTable;
     private JTable inventoryControlReportsTable;
     private JTable transactionReportTable;
-    private JButton ordersSearchButton;
-    private JTextField ordersSearchTextField;
-    private JButton inventoryControlSearchButton;
-    private JTextField inventoryControlTextField;
-    private JButton transactionSearchButton;
-    private JTextField transactionTextField;
+    private JTextField ordersReportTextField;
+    private JTextField inventoryReportTextField;
+    private JTextField transactionsReportTextField;
 
     public static void main(String[] args) {
         JFrame reportsScreenFrame = new Reports("Reports");
         reportsScreenFrame.setVisible(true);
-
-
     }
-
 
 
     public void tb_load(){ //Displays our javapos database inventoryControl table in the jtable
@@ -148,96 +142,6 @@ public class Reports extends JFrame {
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes programs start in fullscreen
         this.setResizable(false);
-
-
-
-        //Shows everything in our database table called inventorycontrol
-        inventoryControlSearchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchResult = inventoryControlTextField.getText();
-                try {
-                    Statement s = db.mycon().createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM inventorycontrol");
-                    if (rs.next()){
-
-
-
-                    }
-
-                } catch (SQLException f){
-                    System.out.println(f);
-                }
-                tb_load();
-            }
-        });
-        inventoryControlTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                inventoryControlSearchButton.doClick();
-            }
-        });
-
-
-
-        //Shows everything in our database table called orderstablebottom
-        ordersSearchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchResult = ordersSearchTextField.getText();
-                try {
-                    Statement s = db.mycon().createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM orderstablebottom");
-                    if (rs.next()){
-
-
-
-                    }
-
-                } catch (SQLException f){
-                    System.out.println(f);
-                }
-                tb_load();
-            }
-        });
-        ordersSearchTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ordersSearchButton.doClick();
-            }
-        });
-
-        //Shows everything in our database table called transactions
-        transactionSearchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchResult = transactionTextField.getText();
-                try {
-                    Statement s = db.mycon().createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM transactions");
-                    if (rs.next()){
-
-
-
-                    }
-
-                } catch (SQLException f){
-                    System.out.println(f);
-                }
-                tb_load();
-            }
-        });
-        transactionTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                transactionSearchButton.doClick();
-            }
-        });
-
-
-
-
-
 
             }
 
