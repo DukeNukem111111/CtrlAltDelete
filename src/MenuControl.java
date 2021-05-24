@@ -12,7 +12,6 @@ public class MenuControl extends JFrame {
     private JTable inventoryControlTable;
     private JTextField itemNameTextField;
     private JTextField itemIDTextField;
-    private JLabel itemIDLabel;
     private JLabel itemNameLabel;
     private JButton addButton;
     private JButton removeButton;
@@ -87,14 +86,13 @@ public class MenuControl extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String itemID = itemIDTextField.getText();
                 String itemName = itemNameTextField.getText();
                 String itemPrice = itemPriceTextField.getText();
 
 
                 try { //Add button code, adds details to mysql database
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("INSERT INTO menucontrol VALUES ('"+itemID+"','"+itemName+"','"+itemPrice+"')");
+                    s.executeUpdate("INSERT INTO menucontrol (itemName, itemPrice)(SELECT '"+itemName+"','"+itemPrice+"')");
                 }catch (Exception f){
                     System.out.println(f);
                 }
@@ -112,7 +110,6 @@ public class MenuControl extends JFrame {
                     Statement s = db.mycon().createStatement();
                     ResultSet rs = s.executeQuery(" SELECT * FROM menucontrol WHERE itemID = '"+searchResult+"'");
                     if (rs.next()){
-                        itemIDTextField.setText(rs.getString("itemID"));
                         itemNameTextField.setText(rs.getString("itemName"));
                         itemPriceTextField.setText(rs.getString("itemPrice"));
                     }
@@ -171,7 +168,6 @@ public class MenuControl extends JFrame {
         clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemIDTextField.setText(null);
                 itemNameTextField.setText(null);
                 itemPriceTextField.setText(null);
             }
