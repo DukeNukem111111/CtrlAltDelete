@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,10 +26,10 @@ public class Sales extends JFrame {
     private JButton steakButton;
     private JButton saladsButton;
     private JButton startersButton;
-    private JTable orderDetailsTableTop;
-    private JTable orderDetailsTableBottom;
-    private JButton placeOrderButton;
-    private JButton clearAllButton;
+    private JTable table1;
+    private JTable table2;
+    private JButton button28;
+    private JButton button29;
     private JButton cashConfirmPaymentButton;
     private JTextField customerNameTextField;
     private JTextField subtotalTextField;
@@ -43,14 +42,12 @@ public class Sales extends JFrame {
     private JTextField textField9;
     private JTextField textField10;
     private JButton cardConfirmPaymentButton;
+    private JCheckBox cashPaymentCheckBox;
+    private JCheckBox cardPaymentCheckBox;
     private JTabbedPane tabbedPane;
-    private JButton sandwichButton;
-    private JButton button2;
-    private JButton button3;
-    private JButton button10;
-    private JButton button11;
-    private JButton button4;
-    private JButton button5;
+    private JButton englishBreakfastButton;
+    private JButton vegetarianNachosButton;
+    private JButton gordonsButton;
     private JPanel ginTab;
     private JPanel breakfastTab;
     private JPanel tequilaTab;
@@ -72,7 +69,66 @@ public class Sales extends JFrame {
     private JPanel startersTab;
     private JPanel steakTab;
     private JPanel saladsTab;
-    private JPanel cashJpanel;
+    private JButton greekSalad;
+    private JButton chickenCaesarButton;
+    private JButton miditerraneanButton;
+    private JButton skyyButton;
+    private JButton absoluteButton;
+    private JButton greyGooseButton;
+    private JButton olmecaSilverButton;
+    private JButton olmecaGoldButton;
+    private JButton ponchosButton;
+    private JButton johnnieWalkerButton;
+    private JButton glenlivetButton;
+    private JButton jamesonButton;
+    private JButton havanaClubButton;
+    private JButton redHeartButton;
+    private JButton captainMorganSpicedButton;
+    private JButton tanquerayButton;
+    private JButton bombaySapphireButton;
+    private JButton remyMartinVSOPButton;
+    private JButton hennessyVSOPButton;
+    private JButton martellCaractereButton;
+    private JButton sauvignonBlancButton;
+    private JButton chardonnayButton;
+    private JButton merlotShirazButton;
+    private JButton ribSteakButton;
+    private JButton steakWingButton;
+    private JButton ribCalamariButton;
+    private JButton domPerignonButton;
+    private JButton veuveClicquotButton;
+    private JButton andreBrutButton;
+    private JButton tapWaterButton;
+    private JButton stillButton;
+    private JButton sparklingButton;
+    private JButton fantaGrapeButton;
+    private JButton lemonIcedTeaButton;
+    private JButton redBullButton;
+    private JButton windhoekDraughtButton;
+    private JButton castleLightButton;
+    private JButton savannaDryButton;
+    private JButton porkTacosButton;
+    private JButton beefLasagneButton;
+    private JButton beefBurgerButton;
+    private JButton steakBurgerButton;
+    private JButton salmonBurgerButton;
+    private JButton chickenSchnitzelButton;
+    private JButton chickenEspetadaButton;
+    private JButton chickenFilletButton;
+    private JButton mexicanButton;
+    private JButton BBQButton;
+    private JButton hawaiianButton;
+    private JButton cheesePrawnsButton;
+    private JButton blackMushroomsButton;
+    private JButton lambKidneysButton;
+    private JButton rumpSteakButton;
+    private JButton filletSteakButton;
+    private JButton sirloinSteakButton;
+    private JButton eggsBenedictButton;
+    private JButton wafflesSyrupButton;
+    private JButton gordonBleuButton;
+    private JButton panSearedSalmonButton;
+    private JButton beefBrisketButton;
 
     public static void main(String[] args) {
         JFrame salesScreenFrame = new Sales("Sales");
@@ -211,4 +267,5 @@ public class Sales extends JFrame {
             }
         });
     }
+
 }
