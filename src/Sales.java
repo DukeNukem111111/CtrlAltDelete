@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -143,6 +144,7 @@ public class Sales extends JFrame {
     private JTextField cardPinInput;
     private JTextField cardNumberInput;
     private JTextField cardBalanceInput;
+    private JTextField cardValidShower;
     public int allowAccess;
 
     public static void main(String[] args) {
@@ -654,6 +656,10 @@ public class Sales extends JFrame {
                     cardGratuityTextField.setText(null);
                     cardDiscountTextField.setText(null);
                     cardTotalTextField.setText(null);
+
+                    cardValidShower.setBackground(new Color(187,186,0));
+                    cardNumberTextField.setText(null);
+                    cardPinTextField.setText(null);
                 }
             }
         });
@@ -689,17 +695,13 @@ public class Sales extends JFrame {
                 if (Integer.parseInt(pinNum1)==Integer.parseInt(pinNum2) && Integer.parseInt(CardNum1)==Integer.parseInt(CardNum2)
                         && Double.parseDouble(Balance2)>Double.parseDouble(Balance1)){
                     allowAccess=1;
+                    cardValidShower.setBackground(new Color(131,187,87));
                 }
                 else{
                     allowAccess=0;
                 }
-
-                System.out.println(allowAccess);
             }
         });
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }
