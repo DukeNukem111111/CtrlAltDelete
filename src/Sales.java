@@ -266,6 +266,12 @@ public class Sales extends JFrame {
                 tabbedPane.setSelectedComponent(brandyTab);
             }
         });
+        breakfastButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedComponent(breakfastTab);
+            }
+        });
     }
 
 }
