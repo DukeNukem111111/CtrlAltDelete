@@ -36,16 +36,16 @@ public class Sales extends JFrame {
     private JButton placeOrderButton;
     private JButton clearAllButton;
     private JButton cashConfirmPaymentButton;
-    private JTextField cashCustomerNameTextField;
+    private JTextField cashOrderIDTextField;
     private JTextField cashSubtotalTextField;
-    private JTextField gratuityTextField;
-    private JTextField discountTextField;
-    private JTextField totalTextField;
-    private JTextField cardCustomerNameTextField;
+    private JTextField cashGratuityTextField;
+    private JTextField cashDiscountTextField;
+    private JTextField cashTotalTextField;
+    private JTextField cardOrderID;
     private JTextField cardSubtotalTextField;
-    private JTextField textField8;
-    private JTextField textField9;
-    private JTextField textField10;
+    private JTextField cardGratuityTextField;
+    private JTextField cardDiscountTextField;
+    private JTextField cardTotalTextField;
     private JButton cardConfirmPaymentButton;
     private JTabbedPane tabbedPane;
     private JButton englishBreakfastButton;
@@ -135,6 +135,10 @@ public class Sales extends JFrame {
     private JButton cashSearchButton;
     private JButton cardSearchButton;
     private JTextField topCustomerNameTextField;
+    private JTextField textField1;
+    private JPasswordField passwordField1;
+    private JButton cashClearButton;
+    private JButton cardClearAllButton;
 
     public static void main(String[] args) {
         JFrame salesScreenFrame = new Sales("Sales");
@@ -178,12 +182,13 @@ public class Sales extends JFrame {
 
             DefaultTableModel dt = (DefaultTableModel) ordersTableBottom.getModel();
             dt.setRowCount(0);
-            dt.setColumnCount(3); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
+            dt.setColumnCount(4); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
 
             //Add names to columns
-            ordersTableBottom.getColumnModel().getColumn(0).setHeaderValue("Customer Name");
-            ordersTableBottom.getColumnModel().getColumn(1).setHeaderValue("Order Details");
-            ordersTableBottom.getColumnModel().getColumn(2).setHeaderValue("Order Total");
+            ordersTableBottom.getColumnModel().getColumn(0).setHeaderValue("Order ID");
+            ordersTableBottom.getColumnModel().getColumn(1).setHeaderValue("Customer Name");
+            ordersTableBottom.getColumnModel().getColumn(2).setHeaderValue("Order Details");
+            ordersTableBottom.getColumnModel().getColumn(3).setHeaderValue("Order Total");
             ordersTableBottom.getTableHeader().resizeAndRepaint();
 
             Statement s = db.mycon().createStatement();
@@ -195,6 +200,7 @@ public class Sales extends JFrame {
                 v.add(rs.getString(1));
                 v.add(rs.getString(2));
                 v.add(rs.getString(3));
+                v.add(rs.getString(4));
 
                 dt.addRow(v);
 
@@ -203,6 +209,11 @@ public class Sales extends JFrame {
         }catch (SQLException f){
             System.out.println(f);
         }
+    }
+
+    public void calculatetotal(){
+        Double cashTotal = Double.parseDouble(cashSubtotalTextField.getText())+Double.parseDouble(cashGratuityTextField.getText())-Double.parseDouble(cashDiscountTextField.getText());
+        cashTotalTextField.setText(String.valueOf(cashTotal));
     }
 
 
@@ -485,22 +496,23 @@ public class Sales extends JFrame {
                 String customerName = topCustomerNameTextField.getText();
                 try {
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("INSERT INTO orderstablebottom (SELECT '"+customerName+"', GROUP_CONCAT(itemName), SUM(itemPrice) FROM orderstabletop)");
+                    s.executeUpdate("INSERT INTO orderstablebottom (CustomerName, OrderDetails, OrderTotal)(SELECT '"+customerName+"', GROUP_CONCAT(itemName), SUM(itemPrice) FROM orderstabletop)");
                     tb2_load();
                 }catch (Exception f){
                     System.out.println(f);
                 }
+                clearAllButton.doClick();
             }
         });
         cashSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String searchResult = cashCustomerNameTextField.getText();
+                String searchResult = cashOrderIDTextField.getText();
                 try {
                     Statement s = db.mycon().createStatement();
-                    ResultSet rs = s.executeQuery(" SELECT * FROM orderstablebottom WHERE CustomerName = '"+searchResult+"'");
+                    ResultSet rs = s.executeQuery(" SELECT * FROM orderstablebottom WHERE OrderID = '"+searchResult+"'");
                     if (rs.next()){
-                        cashCustomerNameTextField.setText(rs.getString("CustomerName"));
+                        cashOrderIDTextField.setText(rs.getString("OrderID"));
                         cashSubtotalTextField.setText(rs.getString("OrderTotal"));
                     }
 
@@ -510,10 +522,52 @@ public class Sales extends JFrame {
                 tb2_load();
             }
         });
-        cashCustomerNameTextField.addActionListener(new ActionListener() {
+        cashOrderIDTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cashSearchButton.doClick();
+            }
+        });
+
+        cashDiscountTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calculatetotal();
+            }
+        });
+        cashClearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cashOrderIDTextField.setText(null);
+                cashSubtotalTextField.setText(null);
+                cashGratuityTextField.setText(null);
+                cashDiscountTextField.setText(null);
+                cashTotalTextField.setText(null);
+            }
+        });
+        cashConfirmPaymentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int orderID = Integer.parseInt(cashOrderIDTextField.getText());
+                calculatetotal();
+                Double cashTotal = Double.valueOf(cashTotalTextField.getText());
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO transactions (TransactionAmount, CustomerName, OrderID)(SELECT '"+cashTotal+"', CustomerName, OrderID FROM orderstablebottom WHERE OrderID = '"+orderID+"')");
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+                cashOrderIDTextField.setText(null);
+                cashSubtotalTextField.setText(null);
+                cashGratuityTextField.setText(null);
+                cashDiscountTextField.setText(null);
+                cashTotalTextField.setText(null);
+            }
+        });
+        cashGratuityTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calculatetotal();
             }
         });
     }

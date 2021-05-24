@@ -12,7 +12,6 @@ public class InventoryControl extends JFrame {
     private JTable menuControlTable;
     private JTextField itemNameTextField;
     private JTextField itemIDTextField;
-    private JLabel itemIDLabel;
     private JLabel itemNameLabel;
     private JButton addButton;
     private JButton removeButton;
@@ -91,7 +90,6 @@ public class InventoryControl extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String itemID = itemIDTextField.getText();
                 String itemName = itemNameTextField.getText();
                 String itemQuantity = itemQuantityTextField.getText();
                 String delivered = deliveredTextField.getText();
@@ -99,7 +97,7 @@ public class InventoryControl extends JFrame {
 
                 try { //Add button code, adds details to mysql database
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("INSERT INTO inventorycontrol VALUES ('"+itemID+"','"+itemName+"','"+itemQuantity+"','"+delivered+"')");
+                    s.executeUpdate("INSERT INTO inventorycontrol (itemName, itemQuantity, delivered)(SELECT '"+itemName+"','"+itemQuantity+"','"+delivered+"')");
                 }catch (Exception f){
                     System.out.println(f);
                 }
@@ -178,7 +176,6 @@ public class InventoryControl extends JFrame {
         clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemIDTextField.setText(null);
                 itemNameTextField.setText(null);
                 itemQuantityTextField.setText(null);
                 deliveredTextField.setText(null);
