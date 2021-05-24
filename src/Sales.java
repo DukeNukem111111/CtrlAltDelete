@@ -36,13 +36,13 @@ public class Sales extends JFrame {
     private JButton placeOrderButton;
     private JButton clearAllButton;
     private JButton cashConfirmPaymentButton;
-    private JTextField customerNameTextField;
-    private JTextField subtotalTextField;
+    private JTextField cashCustomerNameTextField;
+    private JTextField cashSubtotalTextField;
     private JTextField gratuityTextField;
     private JTextField discountTextField;
     private JTextField totalTextField;
-    private JTextField textField6;
-    private JTextField textField7;
+    private JTextField cardCustomerNameTextField;
+    private JTextField cardSubtotalTextField;
     private JTextField textField8;
     private JTextField textField9;
     private JTextField textField10;
@@ -477,11 +477,11 @@ public class Sales extends JFrame {
             }
         });
 
+        /*When the place order button is clicked, the info in the top table should be summarized and displayed in the bottom one, this
+        does just that */
         placeOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String itemName;
-                String orderTotal;
                 String customerName = topCustomerNameTextField.getText();
                 try {
                     Statement s = db.mycon().createStatement();
@@ -490,6 +490,30 @@ public class Sales extends JFrame {
                 }catch (Exception f){
                     System.out.println(f);
                 }
+            }
+        });
+        cashSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchResult = cashCustomerNameTextField.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    ResultSet rs = s.executeQuery(" SELECT * FROM orderstablebottom WHERE CustomerName = '"+searchResult+"'");
+                    if (rs.next()){
+                        cashCustomerNameTextField.setText(rs.getString("CustomerName"));
+                        cashSubtotalTextField.setText(rs.getString("OrderTotal"));
+                    }
+
+                } catch (SQLException f){
+                    System.out.println(f);
+                }
+                tb2_load();
+            }
+        });
+        cashCustomerNameTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cashSearchButton.doClick();
             }
         });
     }

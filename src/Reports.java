@@ -2,6 +2,15 @@ import javax.swing.*;
 
 public class Reports extends JFrame {
     private JPanel reportsForm;
+    private JTable table1;
+    private JTable table2;
+    private JTable table4;
+    private JButton button1;
+    private JTextField textField1;
+    private JButton button3;
+    private JTextField textField2;
+    private JButton button5;
+    private JTextField textField3;
 
     public static void main(String[] args) {
         JFrame reportsScreenFrame = new Reports("Reports");
