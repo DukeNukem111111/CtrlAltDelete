@@ -36,19 +36,17 @@ public class Sales extends JFrame {
     private JButton placeOrderButton;
     private JButton clearAllButton;
     private JButton cashConfirmPaymentButton;
-    private JTextField customerNameTextField;
-    private JTextField subtotalTextField;
+    private JTextField cashCustomerNameTextField;
+    private JTextField cashSubtotalTextField;
     private JTextField gratuityTextField;
     private JTextField discountTextField;
     private JTextField totalTextField;
-    private JTextField textField6;
-    private JTextField textField7;
+    private JTextField cardCustomerNameTextField;
+    private JTextField cardSubtotalTextField;
     private JTextField textField8;
     private JTextField textField9;
     private JTextField textField10;
     private JButton cardConfirmPaymentButton;
-    private JCheckBox cashPaymentCheckBox;
-    private JCheckBox cardPaymentCheckBox;
     private JTabbedPane tabbedPane;
     private JButton englishBreakfastButton;
     private JButton vegetarianNachosButton;
@@ -134,6 +132,9 @@ public class Sales extends JFrame {
     private JButton gordonBleuButton;
     private JButton panSearedSalmonButton;
     private JButton beefBrisketButton;
+    private JButton cashSearchButton;
+    private JButton cardSearchButton;
+    private JTextField topCustomerNameTextField;
 
     public static void main(String[] args) {
         JFrame salesScreenFrame = new Sales("Sales");
@@ -172,10 +173,43 @@ public class Sales extends JFrame {
         }
     }
 
+    public void tb2_load(){ //Displays the order history in the second table after "place order is clicked"
+        try{
+
+            DefaultTableModel dt = (DefaultTableModel) ordersTableBottom.getModel();
+            dt.setRowCount(0);
+            dt.setColumnCount(3); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
+
+            //Add names to columns
+            ordersTableBottom.getColumnModel().getColumn(0).setHeaderValue("Customer Name");
+            ordersTableBottom.getColumnModel().getColumn(1).setHeaderValue("Order Details");
+            ordersTableBottom.getColumnModel().getColumn(2).setHeaderValue("Order Total");
+            ordersTableBottom.getTableHeader().resizeAndRepaint();
+
+            Statement s = db.mycon().createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM orderstablebottom");
+
+            //Write data from mySQL database to jtable
+            while (rs.next()){
+                Vector v = new Vector();
+                v.add(rs.getString(1));
+                v.add(rs.getString(2));
+                v.add(rs.getString(3));
+
+                dt.addRow(v);
+
+            }
+
+        }catch (SQLException f){
+            System.out.println(f);
+        }
+    }
+
 
     public Sales(String title) {
         super(title);
         tb_load();
+        tb2_load();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setContentPane(salesForm);
         this.setLocationRelativeTo(null);
@@ -440,6 +474,46 @@ public class Sales extends JFrame {
                 }catch (Exception f){
                     System.out.println(f);
                 }
+            }
+        });
+
+        /*When the place order button is clicked, the info in the top table should be summarized and displayed in the bottom one, this
+        does just that */
+        placeOrderButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String customerName = topCustomerNameTextField.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstablebottom (SELECT '"+customerName+"', GROUP_CONCAT(itemName), SUM(itemPrice) FROM orderstabletop)");
+                    tb2_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        cashSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchResult = cashCustomerNameTextField.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    ResultSet rs = s.executeQuery(" SELECT * FROM orderstablebottom WHERE CustomerName = '"+searchResult+"'");
+                    if (rs.next()){
+                        cashCustomerNameTextField.setText(rs.getString("CustomerName"));
+                        cashSubtotalTextField.setText(rs.getString("OrderTotal"));
+                    }
+
+                } catch (SQLException f){
+                    System.out.println(f);
+                }
+                tb2_load();
+            }
+        });
+        cashCustomerNameTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cashSearchButton.doClick();
             }
         });
     }
