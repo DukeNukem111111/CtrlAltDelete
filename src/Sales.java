@@ -1,6 +1,11 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Vector;
 
 public class Sales extends JFrame {
     public JPanel salesForm;
@@ -26,10 +31,10 @@ public class Sales extends JFrame {
     private JButton steakButton;
     private JButton saladsButton;
     private JButton startersButton;
-    private JTable table1;
-    private JTable table2;
-    private JButton button28;
-    private JButton button29;
+    private JTable ordersTableTop;
+    private JTable ordersTableBottom;
+    private JButton placeOrderButton;
+    private JButton clearAllButton;
     private JButton cashConfirmPaymentButton;
     private JTextField customerNameTextField;
     private JTextField subtotalTextField;
@@ -135,9 +140,42 @@ public class Sales extends JFrame {
         salesScreenFrame.setVisible(true);
     }
 
+    public void tb_load(){ //Displays our javapos database menucontrol table in the jtable
+        try{
+
+            DefaultTableModel dt = (DefaultTableModel) ordersTableTop.getModel();
+            dt.setRowCount(0);
+            dt.setColumnCount(3); //Line is necessary to add columns to table, caused major headaches and was found by chance. No table shown otherwise
+
+            //Add names to columns
+            ordersTableTop.getColumnModel().getColumn(0).setHeaderValue("Item ID");
+            ordersTableTop.getColumnModel().getColumn(1).setHeaderValue("Item Name");
+            ordersTableTop.getColumnModel().getColumn(2).setHeaderValue("Item Price");
+            ordersTableTop.getTableHeader().resizeAndRepaint();
+
+            Statement s = db.mycon().createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM orderstabletop");
+
+            //Write data from mySQL database to jtable
+            while (rs.next()){
+                Vector v = new Vector();
+                v.add(rs.getString(1));
+                v.add(rs.getString(2));
+                v.add(rs.getString(3));
+
+                dt.addRow(v);
+
+            }
+
+        }catch (SQLException f){
+            System.out.println(f);
+        }
+    }
+
 
     public Sales(String title) {
         super(title);
+        tb_load();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setContentPane(salesForm);
         this.setLocationRelativeTo(null);
@@ -270,6 +308,138 @@ public class Sales extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tabbedPane.setSelectedComponent(breakfastTab);
+            }
+        });
+
+        englishBreakfastButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = englishBreakfastButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+
+            }
+        });
+        clearAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("TRUNCATE TABLE orderstabletop");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+
+        eggsBenedictButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = eggsBenedictButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        wafflesSyrupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = wafflesSyrupButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        vegetarianNachosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = vegetarianNachosButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        porkTacosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = porkTacosButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        beefLasagneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = beefLasagneButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        gordonBleuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = gordonBleuButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        panSearedSalmonButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = panSearedSalmonButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        beefBrisketButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = beefBrisketButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
             }
         });
     }

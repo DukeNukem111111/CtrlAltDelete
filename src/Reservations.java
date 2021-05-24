@@ -31,6 +31,21 @@ public class Reservations extends JFrame {
     private JButton clearButton;
 
 
+    //COPY-PASTE THIS CODE FOR MEAL AND DRINK BUTTON FUNCTIONALITIES
+    /* only change string itemname to relevant button name
+
+     String itemName = englishBreakfastButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+
+     */
+
+
     public static void main(String[] args) {
         JFrame reservationsFrame = new Reservations("Reservations"); //Creates the new window that holds all reservations related items
         reservationsFrame.setVisible(true);
