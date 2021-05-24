@@ -32,12 +32,14 @@ public class InventoryControl extends JFrame {
     private JTextField deliveredTextField;
 
 
+    //Creates the new window that holds all inventory control related items
     public static void main(String[] args) {
-        JFrame inventoryControlControlFrame = new InventoryControl("Inventory Control"); //Creates the new window that holds all inventory control related items
+        JFrame inventoryControlControlFrame = new InventoryControl("Inventory Control");
         inventoryControlControlFrame.setVisible(true);
     }
 
-    public void tb_load(){ //Displays our javapos database inventoryControl table in the jtable
+    //Displays our javapos database inventoryControl table in the relevant jtable
+    public void tb_load(){
         try{
 
             DefaultTableModel dt = (DefaultTableModel) inventoryControlTable.getModel();
@@ -51,10 +53,10 @@ public class InventoryControl extends JFrame {
             inventoryControlTable.getColumnModel().getColumn(3).setHeaderValue("Delivery Date");
             inventoryControlTable.getTableHeader().resizeAndRepaint();
 
+            //Write data from mySQL database to jtable
             Statement s = db.mycon().createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM inventorycontrol");
 
-            //Write data from mySQL database to jtable
             while (rs.next()){
                 Vector v = new Vector();
                 v.add(rs.getString(1));
@@ -62,11 +64,8 @@ public class InventoryControl extends JFrame {
                 v.add(rs.getString(3));
                 v.add(rs.getString(4));
 
-
                 dt.addRow(v);
-
             }
-
         }catch (SQLException f){
             System.out.println(f);
         }
@@ -86,7 +85,7 @@ public class InventoryControl extends JFrame {
 
 
 
-        //Adds data to database
+        //Writes data to inventorycontrol table within the database
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -94,8 +93,8 @@ public class InventoryControl extends JFrame {
                 String itemQuantity = itemQuantityTextField.getText();
                 String delivered = deliveredTextField.getText();
 
-
-                try { //Add button code, adds details to mysql database
+                //mySQL command to insert the relevant data
+                try {
                     Statement s = db.mycon().createStatement();
                     s.executeUpdate("INSERT INTO inventorycontrol (itemName, itemQuantity, delivered)(SELECT '"+itemName+"','"+itemQuantity+"','"+delivered+"')");
                 }catch (Exception f){
@@ -106,8 +105,8 @@ public class InventoryControl extends JFrame {
             }
         });
 
-        //Searches for data using the itemID as the search ID
-        searchButton.addActionListener(new ActionListener() { //search button code, implements search functionality for database
+        //Search button code, searches for data using the itemID as the search ID
+        searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchResult = searchTextField.getText();
@@ -154,7 +153,7 @@ public class InventoryControl extends JFrame {
             }
         });
 
-        //Removal of records
+        //Removal of records from inventorycontrol table
         removeButton.addActionListener(new ActionListener() { //Remove certain records from database
             @Override
             public void actionPerformed(ActionEvent e) {

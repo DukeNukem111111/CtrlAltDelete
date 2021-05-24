@@ -73,9 +73,9 @@ public class Sales extends JFrame {
     private JPanel startersTab;
     private JPanel steakTab;
     private JPanel saladsTab;
-    private JButton greekSalad;
+    private JButton greekSaladButton;
     private JButton chickenCaesarButton;
-    private JButton miditerraneanButton;
+    private JButton mediterraneanButton;
     private JButton skyyButton;
     private JButton absoluteButton;
     private JButton greyGooseButton;
@@ -152,7 +152,8 @@ public class Sales extends JFrame {
         salesScreenFrame.setVisible(true);
     }
 
-    public void tb_load(){ //Displays our javapos database menucontrol table in the jtable
+    //Displays our javapos database sales table in the jtable
+    public void tb_load(){
         try{
 
             DefaultTableModel dt = (DefaultTableModel) ordersTableTop.getModel();
@@ -184,7 +185,8 @@ public class Sales extends JFrame {
         }
     }
 
-    public void tb2_load(){ //Displays the order history in the second table after "place order is clicked"
+    //Displays a summarised order history in the second table after "place order" is clicked
+    public void tb2_load(){
         try{
 
             DefaultTableModel dt = (DefaultTableModel) ordersTableBottom.getModel();
@@ -218,19 +220,20 @@ public class Sales extends JFrame {
         }
     }
 
-    //calculates the total for the cash payment section
+    //calculates the total for the cash payment section using the subtotal, gratuity, and discount
     public void calculatetotal(){
         Double cashTotal = Double.parseDouble(cashSubtotalTextField.getText())+Double.parseDouble(cashGratuityTextField.getText())-Double.parseDouble(cashDiscountTextField.getText());
         cashTotalTextField.setText(String.valueOf(cashTotal));
     }
 
-    //Calculates total for the card payment section
+    //Calculates total for the card payment section using the subtotal, gratuity, and discount
     public void cardcalculatetotal(){
         Double cardTotal = Double.parseDouble(cardSubtotalTextField.getText())+Double.parseDouble(cardGratuityTextField.getText())-Double.parseDouble(cardDiscountTextField.getText());
         cardTotalTextField.setText(String.valueOf(cardTotal));
     }
 
 
+    //Sales window settings
     public Sales(String title) {
         super(title);
         tb_load();
@@ -243,6 +246,7 @@ public class Sales extends JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes programs start in fullscreen
         this.setResizable(false);
 
+        //Buttons for the different sections and subsections
         ginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -502,8 +506,8 @@ public class Sales extends JFrame {
             }
         });
 
-        /*When the place order button is clicked, the info in the top table should be summarized and displayed in the bottom one, this
-        does just that */
+        /*When the place order button is clicked, the info in the top table should be summarized and displayed in the bottom
+        one, this does just that */
         placeOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -518,6 +522,8 @@ public class Sales extends JFrame {
                 clearAllButton.doClick();
             }
         });
+
+        //Searches the orders history database to display the order total depending on the order number
         cashSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -536,6 +542,7 @@ public class Sales extends JFrame {
                 tb2_load();
             }
         });
+
         cashOrderIDTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -549,6 +556,7 @@ public class Sales extends JFrame {
                 calculatetotal();
             }
         });
+
         cashClearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -559,6 +567,9 @@ public class Sales extends JFrame {
                 cashTotalTextField.setText(null);
             }
         });
+
+        /*Confirms the cash payment, and adds it to the transaction history database, no need to check for card
+        * validity and balance as it's cash so the transaction is performed and recorded*/
         cashConfirmPaymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -579,6 +590,7 @@ public class Sales extends JFrame {
                 cashTotalTextField.setText(null);
             }
         });
+
         cashGratuityTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -591,6 +603,8 @@ public class Sales extends JFrame {
                 cardSearchButton.doClick();
             }
         });
+
+        //Searches the orders history database to display the order total depending on the order number
         cardSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -633,7 +647,8 @@ public class Sales extends JFrame {
         });
 
 
-
+        /*Confirms the card payment, and adds it to the transaction history database, "allowAccess" checks whether the card
+        * checker verified the pin and balance to allow the transaction to happen*/
         cardConfirmPaymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -664,9 +679,8 @@ public class Sales extends JFrame {
             }
         });
 
-
         /*The previously declared public int allowAccess will act as a true/false boolean using the numbers 1 and 0 to
-        either allow or deny access to the rest of the payment functions. The check card button checks wether a card is
+        either allow or deny access to the rest of the payment functions. The check card button checks whether a card is
         valid and has enough money*/
 
         checkCardButton.addActionListener(new ActionListener() {
@@ -692,6 +706,9 @@ public class Sales extends JFrame {
                 String pinNum2 = cardPinTextField.getText();
                 String Balance1 = cardTotalTextField.getText();
                 String Balance2= cardBalanceInput.getText();
+
+                /*This part checks the card number and pin against the bank database, and if it's successfully verified
+                * it returns the avaliable balance and checks whether that's enough to cover the payment*/
                 if (Integer.parseInt(pinNum1)==Integer.parseInt(pinNum2) && Integer.parseInt(CardNum1)==Integer.parseInt(CardNum2)
                         && Double.parseDouble(Balance2)>Double.parseDouble(Balance1)){
                     allowAccess=1;
@@ -699,6 +716,703 @@ public class Sales extends JFrame {
                 }
                 else{
                     allowAccess=0;
+                }
+            }
+        });
+
+        //Menu items buttons
+        cheesePrawnsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = cheesePrawnsButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        blackMushroomsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = blackMushroomsButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        lambKidneysButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = lambKidneysButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        greekSaladButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = greekSaladButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        chickenCaesarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = chickenCaesarButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        mediterraneanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = mediterraneanButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        rumpSteakButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = rumpSteakButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        filletSteakButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = filletSteakButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        sirloinSteakButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = sirloinSteakButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        beefBurgerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = beefBurgerButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        steakBurgerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = steakBurgerButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        salmonBurgerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = salmonBurgerButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        mexicanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = mexicanButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        BBQButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = BBQButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        hawaiianButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = hawaiianButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        chickenSchnitzelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = chickenSchnitzelButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        chickenEspetadaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = chickenEspetadaButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        chickenFilletButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = chickenFilletButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        ribSteakButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = ribSteakButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        steakWingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = steakWingButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        ribCalamariButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = ribCalamariButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        tapWaterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = tapWaterButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        stillButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = stillButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        sparklingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = sparklingButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        windhoekDraughtButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = windhoekDraughtButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        castleLightButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = castleLightButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        savannaDryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = savannaDryButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        fantaGrapeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = fantaGrapeButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        lemonIcedTeaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = lemonIcedTeaButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        redBullButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = redBullButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        sauvignonBlancButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = sauvignonBlancButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        chardonnayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = chardonnayButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        merlotShirazButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = merlotShirazButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        domPerignonButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = veuveClicquotButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        veuveClicquotButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        andreBrutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = andreBrutButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        olmecaSilverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = olmecaSilverButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        olmecaGoldButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = olmecaGoldButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        ponchosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = ponchosButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        havanaClubButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = havanaClubButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        redHeartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = redHeartButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        captainMorganSpicedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = captainMorganSpicedButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        gordonsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = gordonsButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        tanquerayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = tanquerayButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        bombaySapphireButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = bombaySapphireButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        johnnieWalkerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = johnnieWalkerButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        glenlivetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = glenlivetButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        jamesonButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = jamesonButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        skyyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = skyyButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        absoluteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = absoluteButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        greyGooseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = greyGooseButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        remyMartinVSOPButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = remyMartinVSOPButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        hennessyVSOPButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = hennessyVSOPButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
+                }
+            }
+        });
+        martellCaractereButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String itemName = martellCaractereButton.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    s.executeUpdate("INSERT INTO orderstabletop (SELECT * FROM menucontrol WHERE itemName = '"+itemName+"')");
+                    tb_load();
+                }catch (Exception f){
+                    System.out.println(f);
                 }
             }
         });

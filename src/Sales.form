@@ -984,7 +984,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="c9b2a" class="javax.swing.JButton" binding="greekSalad">
+                  <component id="c9b2a" class="javax.swing.JButton" binding="greekSaladButton">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -1000,12 +1000,12 @@
                       <text value="Chicken Caesar"/>
                     </properties>
                   </component>
-                  <component id="baf73" class="javax.swing.JButton" binding="miditerraneanButton" default-binding="true">
+                  <component id="baf73" class="javax.swing.JButton" binding="mediterraneanButton">
                     <constraints>
                       <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Miditerranean"/>
+                      <text value="Mediterranean"/>
                     </properties>
                   </component>
                 </children>
