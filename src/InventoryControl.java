@@ -115,7 +115,6 @@ public class InventoryControl extends JFrame {
                     Statement s = db.mycon().createStatement();
                     ResultSet rs = s.executeQuery(" SELECT * FROM inventorycontrol WHERE itemID = '"+searchResult+"'");
                     if (rs.next()){
-                        itemIDTextField.setText(rs.getString("itemID"));
                         itemNameTextField.setText(rs.getString("itemName"));
                         itemQuantityTextField.setText(rs.getString("itemQuantity"));
                         deliveredTextField.setText(rs.getString("delivered"));
@@ -139,7 +138,6 @@ public class InventoryControl extends JFrame {
         updateButton.addActionListener(new ActionListener() { //Adds update functionality
             @Override
             public void actionPerformed(ActionEvent e) {
-                String itemID = itemIDTextField.getText();
                 String itemName = itemNameTextField.getText();
                 String itemQuantity = itemQuantityTextField.getText();
                 String delivered = deliveredTextField.getText();
@@ -147,7 +145,7 @@ public class InventoryControl extends JFrame {
 
                 try{
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("UPDATE inventorycontrol SET itemID = '"+itemID+"', itemName = '"+itemName+"', itemQuantity = '"+itemQuantity+"', delivered = '"+delivered+"' WHERE itemID = '"+id+"'");
+                    s.executeUpdate("UPDATE inventorycontrol SET  itemName = '"+itemName+"', itemQuantity = '"+itemQuantity+"', delivered = '"+delivered+"' WHERE itemID = '"+id+"'");
                 }catch (Exception f) {
                     System.out.println(f);
                 }

@@ -132,14 +132,13 @@ public class MenuControl extends JFrame {
         updateButton.addActionListener(new ActionListener() { //Adds update functionality
             @Override
             public void actionPerformed(ActionEvent e) {
-                String itemID = itemIDTextField.getText();
                 String itemName = itemNameTextField.getText();
                 String itemPrice = itemPriceTextField.getText();
                 String id = searchTextField.getText();
 
                 try{
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("UPDATE menucontrol SET itemID = '"+itemID+"', itemName = '"+itemName+"', itemPrice = '"+itemPrice+"' WHERE itemID = '"+id+"'");
+                    s.executeUpdate("UPDATE menucontrol SET  itemName = '"+itemName+"', itemPrice = '"+itemPrice+"' WHERE itemID = '"+id+"'");
                 }catch (Exception f) {
                     System.out.println(f);
                 }
