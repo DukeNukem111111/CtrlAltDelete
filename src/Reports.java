@@ -14,7 +14,7 @@ public class Reports extends JFrame {
     private JTable table4;
     private JButton ordersSearchButton;
     private JTextField ordersSearchTextField;
-    private JButton inventoryControlSearch;
+    private JButton inventoryControlSearchButton;
     private JTextField inventoryControlTextField;
     private JButton transactionSearchButton;
     private JTextField transactionTextField;
@@ -25,7 +25,12 @@ public class Reports extends JFrame {
     public static void main(String[] args) {
         JFrame reportsScreenFrame = new Reports("Reports");
         reportsScreenFrame.setVisible(true);
+
+
     }
+
+
+
     public void tb_load(){ //Displays our javapos database menuControls table in the jtable
         try{
 
@@ -49,8 +54,6 @@ public class Reports extends JFrame {
                 v.add(rs.getString(1));
                 v.add(rs.getString(2));
                 v.add(rs.getString(3));
-                v.add(rs.getString(4));
-
 
                 dt.addRow(v);
 
@@ -59,9 +62,7 @@ public class Reports extends JFrame {
         }catch (SQLException f){
             System.out.println(f);
         }
-    }
-
-
+        }
 
     public Reports(String title) {
         super(title);
@@ -73,18 +74,23 @@ public class Reports extends JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes programs start in fullscreen
         this.setResizable(false);
 
-        // Searches for data using the item name as the search ID
-        /*ordersSearchButton.addActionListener(new ActionListener() {
+
+
+
+
+
+
+        //Searches for data using the item name as the search ID
+        inventoryControlSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchResult = ordersSearchTextField.getText();
                 try {
                     Statement s = db.mycon().createStatement();
-                    ResultSet rs = s.executeQuery(" SELECT * FROM menucontrol WHERE itemID = '"+searchResult+"'");
+                    s.executeUpdate()
                     if (rs.next()){
-                        itemIDTextField.setText(rs.getString("itemID"));
-                        itemNameTextField.setText(rs.getString("itemName"));
-                        itemPriceTextField.setText(rs.getString("itemPrice"));
+
+
                     }
 
                 } catch (SQLException f){
@@ -92,11 +98,16 @@ public class Reports extends JFrame {
                 }
                 tb_load();
             }
-        });*/
-
+        });
+        inventoryControlTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inventoryControlSearchButton.doClick();
+            }
+        });
 
         //Searches for data using the item name as the search ID
-        inventoryControlSearch.addActionListener(new ActionListener() {
+        ordersSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchResult = ordersSearchTextField.getText();
@@ -117,7 +128,7 @@ public class Reports extends JFrame {
         inventoryControlTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
             @Override
             public void actionPerformed(ActionEvent e) {
-                inventoryControlSearch.doClick();
+                inventoryControlSearchButton.doClick();
             }
         });
 
