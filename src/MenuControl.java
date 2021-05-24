@@ -30,12 +30,14 @@ public class MenuControl extends JFrame {
     private JLabel deliveredLabel;
 
 
+    //Creates the new window that holds all menu item related items
     public static void main(String[] args) {
-        JFrame menuControlFrame = new MenuControl("Menu Control"); //Creates the new window that holds all menu item related items
+        JFrame menuControlFrame = new MenuControl("Menu Control");
         menuControlFrame.setVisible(true);
     }
 
-    public void tb_load(){ //Displays our javapos database menuControls table in the jtable
+    //Displays our javapos database menuControls table in the jtable
+    public void tb_load(){
         try{
 
             DefaultTableModel dt = (DefaultTableModel) inventoryControlTable.getModel();
@@ -48,19 +50,17 @@ public class MenuControl extends JFrame {
             inventoryControlTable.getColumnModel().getColumn(2).setHeaderValue("Item Price");
             inventoryControlTable.getTableHeader().resizeAndRepaint();
 
+            //Write data from mySQL database to jtable
             Statement s = db.mycon().createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM menucontrol");
 
-            //Write data from mySQL database to jtable
             while (rs.next()){
                 Vector v = new Vector();
                 v.add(rs.getString(1));
                 v.add(rs.getString(2));
                 v.add(rs.getString(3));
 
-
                 dt.addRow(v);
-
             }
 
         }catch (SQLException f){
@@ -101,7 +101,7 @@ public class MenuControl extends JFrame {
             }
         });
 
-        //Searches for data using the item name as the search ID
+        //Searches for data using the itemID as the search ID
         searchButton.addActionListener(new ActionListener() { //search button code, implements search functionality for database
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -121,7 +121,8 @@ public class MenuControl extends JFrame {
             }
         });
 
-        searchTextField.addActionListener(new ActionListener() { //Allows us to search by pressing enter
+        //Allows us to search in the text field by pressing enter
+        searchTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchButton.doClick();
@@ -129,7 +130,7 @@ public class MenuControl extends JFrame {
         });
 
         //Allows changes to be made to database records, update button
-        updateButton.addActionListener(new ActionListener() { //Adds update functionality
+        updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String itemName = itemNameTextField.getText();

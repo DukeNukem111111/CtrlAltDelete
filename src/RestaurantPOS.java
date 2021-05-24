@@ -13,12 +13,13 @@ public class RestaurantPOS extends JFrame {
     private JButton menuControlButton;
 
 
-
+    //creates application window
     public static void main(String[] args) {
         JFrame homeScreenFrame = new RestaurantPOS("Home Screen");
         homeScreenFrame.setVisible(true);
     }
 
+    //specifications and parameters for the home screen
     public RestaurantPOS(String title) {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,6 +30,7 @@ public class RestaurantPOS extends JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes programs start in fullscreen
         this.setResizable(false);
 
+        //Displays store logo on home screen
         homeScreenLogoButton.setIcon(new ImageIcon("C:\\Users\\Duke\\IdeaProjects\\JavaPOS\\icon.png"));
         validate();
 

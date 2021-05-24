@@ -152,7 +152,8 @@ public class Sales extends JFrame {
         salesScreenFrame.setVisible(true);
     }
 
-    public void tb_load(){ //Displays our javapos database menucontrol table in the jtable
+    //Displays our javapos database sales table in the jtable
+    public void tb_load(){
         try{
 
             DefaultTableModel dt = (DefaultTableModel) ordersTableTop.getModel();
@@ -184,7 +185,8 @@ public class Sales extends JFrame {
         }
     }
 
-    public void tb2_load(){ //Displays the order history in the second table after "place order is clicked"
+    //Displays a summarised order history in the second table after "place order" is clicked
+    public void tb2_load(){
         try{
 
             DefaultTableModel dt = (DefaultTableModel) ordersTableBottom.getModel();
@@ -218,19 +220,20 @@ public class Sales extends JFrame {
         }
     }
 
-    //calculates the total for the cash payment section
+    //calculates the total for the cash payment section using the subtotal, gratuity, and discount
     public void calculatetotal(){
         Double cashTotal = Double.parseDouble(cashSubtotalTextField.getText())+Double.parseDouble(cashGratuityTextField.getText())-Double.parseDouble(cashDiscountTextField.getText());
         cashTotalTextField.setText(String.valueOf(cashTotal));
     }
 
-    //Calculates total for the card payment section
+    //Calculates total for the card payment section using the subtotal, gratuity, and discount
     public void cardcalculatetotal(){
         Double cardTotal = Double.parseDouble(cardSubtotalTextField.getText())+Double.parseDouble(cardGratuityTextField.getText())-Double.parseDouble(cardDiscountTextField.getText());
         cardTotalTextField.setText(String.valueOf(cardTotal));
     }
 
 
+    //Sales window settings
     public Sales(String title) {
         super(title);
         tb_load();
@@ -243,6 +246,7 @@ public class Sales extends JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes programs start in fullscreen
         this.setResizable(false);
 
+        //Buttons for the different sections and subsections
         ginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -502,8 +506,8 @@ public class Sales extends JFrame {
             }
         });
 
-        /*When the place order button is clicked, the info in the top table should be summarized and displayed in the bottom one, this
-        does just that */
+        /*When the place order button is clicked, the info in the top table should be summarized and displayed in the bottom
+        one, this does just that */
         placeOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -518,6 +522,8 @@ public class Sales extends JFrame {
                 clearAllButton.doClick();
             }
         });
+
+        //Searches the orders history database to display the order total depending on the order number
         cashSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -536,6 +542,7 @@ public class Sales extends JFrame {
                 tb2_load();
             }
         });
+
         cashOrderIDTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -549,6 +556,7 @@ public class Sales extends JFrame {
                 calculatetotal();
             }
         });
+
         cashClearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -559,6 +567,9 @@ public class Sales extends JFrame {
                 cashTotalTextField.setText(null);
             }
         });
+
+        /*Confirms the cash payment, and adds it to the transaction history database, no need to check for card
+        * validity and balance as it's cash so the transaction is performed and recorded*/
         cashConfirmPaymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -579,6 +590,7 @@ public class Sales extends JFrame {
                 cashTotalTextField.setText(null);
             }
         });
+
         cashGratuityTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -591,6 +603,8 @@ public class Sales extends JFrame {
                 cardSearchButton.doClick();
             }
         });
+
+        //Searches the orders history database to display the order total depending on the order number
         cardSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -633,7 +647,8 @@ public class Sales extends JFrame {
         });
 
 
-
+        /*Confirms the card payment, and adds it to the transaction history database, "allowAccess" checks whether the card
+        * checker verified the pin and balance to allow the transaction to happen*/
         cardConfirmPaymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -664,9 +679,8 @@ public class Sales extends JFrame {
             }
         });
 
-
         /*The previously declared public int allowAccess will act as a true/false boolean using the numbers 1 and 0 to
-        either allow or deny access to the rest of the payment functions. The check card button checks wether a card is
+        either allow or deny access to the rest of the payment functions. The check card button checks whether a card is
         valid and has enough money*/
 
         checkCardButton.addActionListener(new ActionListener() {
@@ -692,6 +706,9 @@ public class Sales extends JFrame {
                 String pinNum2 = cardPinTextField.getText();
                 String Balance1 = cardTotalTextField.getText();
                 String Balance2= cardBalanceInput.getText();
+
+                /*This part checks the card number and pin against the bank database, and if it's successfully verified
+                * it returns the avaliable balance and checks whether that's enough to cover the payment*/
                 if (Integer.parseInt(pinNum1)==Integer.parseInt(pinNum2) && Integer.parseInt(CardNum1)==Integer.parseInt(CardNum2)
                         && Double.parseDouble(Balance2)>Double.parseDouble(Balance1)){
                     allowAccess=1;
@@ -702,6 +719,8 @@ public class Sales extends JFrame {
                 }
             }
         });
+
+        //Menu items buttons
         cheesePrawnsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
