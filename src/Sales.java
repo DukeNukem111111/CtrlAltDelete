@@ -41,7 +41,7 @@ public class Sales extends JFrame {
     private JTextField cashGratuityTextField;
     private JTextField cashDiscountTextField;
     private JTextField cashTotalTextField;
-    private JTextField cardOrderID;
+    private JTextField cardOrderIDTextField;
     private JTextField cardSubtotalTextField;
     private JTextField cardGratuityTextField;
     private JTextField cardDiscountTextField;
@@ -135,10 +135,15 @@ public class Sales extends JFrame {
     private JButton cashSearchButton;
     private JButton cardSearchButton;
     private JTextField topCustomerNameTextField;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
+    private JTextField cardNumberTextField;
+    private JTextField cardPinTextField;
     private JButton cashClearButton;
     private JButton cardClearAllButton;
+    private JButton checkCardButton;
+    private JTextField cardPinInput;
+    private JTextField cardNumberInput;
+    private JTextField cardBalanceInput;
+    public int allowAccess;
 
     public static void main(String[] args) {
         JFrame salesScreenFrame = new Sales("Sales");
@@ -211,9 +216,16 @@ public class Sales extends JFrame {
         }
     }
 
+    //calculates the total for the cash payment section
     public void calculatetotal(){
         Double cashTotal = Double.parseDouble(cashSubtotalTextField.getText())+Double.parseDouble(cashGratuityTextField.getText())-Double.parseDouble(cashDiscountTextField.getText());
         cashTotalTextField.setText(String.valueOf(cashTotal));
+    }
+
+    //Calculates total for the card payment section
+    public void cardcalculatetotal(){
+        Double cardTotal = Double.parseDouble(cardSubtotalTextField.getText())+Double.parseDouble(cardGratuityTextField.getText())-Double.parseDouble(cardDiscountTextField.getText());
+        cardTotalTextField.setText(String.valueOf(cardTotal));
     }
 
 
@@ -548,12 +560,13 @@ public class Sales extends JFrame {
         cashConfirmPaymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String transactionType = "Cash";
                 int orderID = Integer.parseInt(cashOrderIDTextField.getText());
                 calculatetotal();
                 Double cashTotal = Double.valueOf(cashTotalTextField.getText());
                 try {
                     Statement s = db.mycon().createStatement();
-                    s.executeUpdate("INSERT INTO transactions (TransactionAmount, CustomerName, OrderID)(SELECT '"+cashTotal+"', CustomerName, OrderID FROM orderstablebottom WHERE OrderID = '"+orderID+"')");
+                    s.executeUpdate("INSERT INTO transactions (TransactionAmount, CustomerName, TransactionType, OrderID)(SELECT '"+cashTotal+"', CustomerName,'"+transactionType+"', OrderID FROM orderstablebottom WHERE OrderID = '"+orderID+"')");
                 }catch (Exception f){
                     System.out.println(f);
                 }
@@ -570,6 +583,123 @@ public class Sales extends JFrame {
                 calculatetotal();
             }
         });
+        cardOrderIDTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardSearchButton.doClick();
+            }
+        });
+        cardSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchResult = cardOrderIDTextField.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    ResultSet rs = s.executeQuery(" SELECT * FROM orderstablebottom WHERE OrderID = '"+searchResult+"'");
+                    if (rs.next()){
+                        cardOrderIDTextField.setText(rs.getString("OrderID"));
+                        cardSubtotalTextField.setText(rs.getString("OrderTotal"));
+                    }
+
+                } catch (SQLException f){
+                    System.out.println(f);
+                }
+                tb2_load();
+            }
+        });
+        cardClearAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardOrderIDTextField.setText(null);
+                cardSubtotalTextField.setText(null);
+                cardGratuityTextField.setText(null);
+                cardDiscountTextField.setText(null);
+                cardTotalTextField.setText(null);
+            }
+        });
+        cardGratuityTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardcalculatetotal();
+            }
+        });
+        cardDiscountTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardcalculatetotal();
+            }
+        });
+
+
+
+        cardConfirmPaymentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (allowAccess == 1) { /* Checks to see whether the card has been verified and the balance is enough, if so
+                    then the transaction can continue*/
+
+                    String transactionType = "Card";
+                    int orderID = Integer.parseInt(cardOrderIDTextField.getText());
+                    cardcalculatetotal();
+                    Double cardTotal = Double.valueOf(cardTotalTextField.getText());
+                    try {
+                        Statement s = db.mycon().createStatement();
+                        s.executeUpdate("INSERT INTO transactions (TransactionAmount, CustomerName,TransactionType, OrderID)(SELECT '" + cardTotal + "', CustomerName,'" + transactionType + "', OrderID FROM orderstablebottom WHERE OrderID = '" + orderID + "')");
+                    } catch (Exception f) {
+                        System.out.println(f);
+                    }
+                    cardOrderIDTextField.setText(null);
+                    cardSubtotalTextField.setText(null);
+                    cardGratuityTextField.setText(null);
+                    cardDiscountTextField.setText(null);
+                    cardTotalTextField.setText(null);
+                }
+            }
+        });
+
+
+        /*The previously declared public int allowAccess will act as a true/false boolean using the numbers 1 and 0 to
+        either allow or deny access to the rest of the payment functions. The check card button checks wether a card is
+        valid and has enough money*/
+
+        checkCardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchResult = cardPinTextField.getText();
+                try {
+                    Statement s = db.mycon().createStatement();
+                    ResultSet rs = s.executeQuery(" SELECT * FROM bankingdetails WHERE cardPin = '"+searchResult+"'");
+                    if (rs.next()){
+                        cardPinInput.setText(rs.getString("cardPin"));
+                        cardNumberInput.setText(rs.getString("cardNumber"));
+                        cardBalanceInput.setText(rs.getString("availableBalance"));
+                    }
+
+                } catch (SQLException f){
+                    System.out.println(f);
+                }
+
+                String CardNum1 = cardNumberInput.getText();
+                String CardNum2 = cardNumberTextField.getText();
+                String pinNum1 = cardPinInput.getText();
+                String pinNum2 = cardPinTextField.getText();
+                String Balance1 = cardTotalTextField.getText();
+                String Balance2= cardBalanceInput.getText();
+                if (Integer.parseInt(pinNum1)==Integer.parseInt(pinNum2) && Integer.parseInt(CardNum1)==Integer.parseInt(CardNum2)
+                        && Double.parseDouble(Balance2)>Double.parseDouble(Balance1)){
+                    allowAccess=1;
+                }
+                else{
+                    allowAccess=0;
+                }
+
+                System.out.println(allowAccess);
+            }
+        });
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
